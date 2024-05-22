@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body onload="getTimezone()">
+    <div>Ades Ip klienta: {{ ip }}</div>
+    <div>Strefa czasowa klienta: UTC: <span class="output"></span></div>
+    <div>Czas w strefie czasowej klienta: <span class="timeoutput"></span></div>
+
+    <script type="text/javascript"> 
+        function getTimezone() { 
+            // pobranie strefy czasowej klienta
+            // i ustawienie jej w odpowiednim elemencie html
+            offset = new Date().getTimezoneOffset(); 
+            formatted = -(offset / 60); 
+            document.querySelector('.output').textContent 
+                    = formatted; 
+
+            // pobranie czasu w strefie czasowej klienta
+            // i ustawienie go w odpowiednim elemencie html
+            const utcDate = new Date();
+            const clientDate = new Date(utcDate.getTime() + offset);
+            const formattedDate = clientDate.toLocaleString();
+            document.querySelector('.timeoutput').textContent 
+                    = formattedDate; 
+        } 
+    </script> 
+</body>
+</html>
