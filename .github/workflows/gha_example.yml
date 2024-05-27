@@ -61,5 +61,12 @@ jobs:
         name: Build and push Docker image
         id: push
         run: | 
-            docker build . --tag ghcr.io/${{ vars.GH_USERNAME_LOWERCASE }}/zadanie2:v1
+            docker build . --tag ghcr.io/${{ vars.GH_USERNAME_LOWERCASE }}/zadanie2:v1 \
+              --cache-to="registry,ref=ghcr.io/${{ vars.GH_USERNAME_LOWERCASE }}/zadanie2:cache" \
+              --cache-from="registry,ref=ghcr.io/${{ vars.GH_USERNAME_LOWERCASE }}/zadanie2:cache"
             docker push ghcr.io/${{ vars.GH_USERNAME_LOWERCASE }}/zadanie2:v1
+        
+        cache-from: |
+            type=registry,ref=ghcr.io/${{ vars.GH_USERNAME_LOWERCASE }}/zadanie2:cache 
+          cache-to: |
+            type=registry,ref=ghcr.io/${{ vars.GH_USERNAME_LOWERCASE }}/zadanie2:cache 
