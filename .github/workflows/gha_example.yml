@@ -69,10 +69,25 @@ jobs:
             type=sha,priority=100,prefix=sha-,format=short
             type=semver,priority=200,pattern={{version}}
 
+
       - 
-        name: Build and push Docker image # zbudowanie obrazu i wypchnięcie go do repozytorium
-        id: push
-        run: | 
-            docker build . --tag ${{ steps.meta.outputs.tags }} --cache-from="type=gha" --cache-to="type=gha" --platform linux/amd64,linux/arm64
-            docker push ${{ steps.meta.outputs.tags }}
+        name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          cache-from: |
+            type=gha
+          cache-to: |
+            type=gha 
+          tags: ${{ steps.meta.outputs.tags }}
+
+      # - 
+      #   name: Build and push Docker image # zbudowanie obrazu i wypchnięcie go do repozytorium
+      #   id: push
+      #   run: | 
+      #       docker build . --tag ${{ steps.meta.outputs.tags }} --cache-from="type=gha" --cache-to="type=gha" --platform linux/amd64,linux/arm64
+      #       docker push ${{ steps.meta.outputs.tags }}
 #
