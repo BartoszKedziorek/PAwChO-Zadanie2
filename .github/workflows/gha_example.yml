@@ -56,10 +56,20 @@ jobs:
             sh install-scout.sh
             docker scout cves --exit-code --only-severity critical zadanie2test:v1
             echo "SCAN_RESULT=$?" >> "$GITHUB_ENV"
+      
+      -
+        name: Docker metadata definitions
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ vars.DOCKERHUB_USERNAME }}/example
+          flavor: latest=false
+          tags: |
+            type=sha,priority=100,pattern={{version}}
 
       - 
         name: Build and push Docker image
         id: push
         run: | 
-            docker build . --tag ghcr.io/${{ vars.GH_USERNAME_LOWERCASE }}/zadanie2:v1 --cache-from="type=gha" --cache-to="type=gha"
-            docker push ghcr.io/${{ vars.GH_USERNAME_LOWERCASE }}/zadanie2:v1
+            docker build . --tag ghcr.io/${{ vars.GH_USERNAME_LOWERCASE }}/zadanie2:${{ steps.meta.outputs.tags }} --cache-from="type=gha" --cache-to="type=gha"
+            docker push ghcr.io/${{ vars.GH_USERNAME_LOWERCASE }}/zadanie2:${{ steps.meta.outputs.tags }}
