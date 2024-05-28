@@ -43,7 +43,9 @@ jobs:
 
       -
         name: Build local image # lokalne budowanie obrazu
-        run: docker build . --file Dockerfile --tag zadanie2test:v1 --platform linux/amd64,linux/arm64
+        run: |
+            docker buildx create --name mbuilder --driver docker-container --bootstrap --use
+            docker build . --file Dockerfile --tag zadanie2test:v1 --platform linux/amd64,linux/arm64
 
       -
         name: Scan local image # sprawdzenie czy obraz nie zawiera zagrożeń krytycznych
