@@ -64,7 +64,7 @@ jobs:
           flavor: latest=false
           tags: |
             type=sha,priority=100,prefix=sha-,format=short
-            type=semver,priority=200,pattern={{version}},value=v1.0.0   
+            type=semver,priority=200,pattern={{version}}
 
       - 
         name: Build and push Docker image
