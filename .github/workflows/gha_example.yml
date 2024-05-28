@@ -65,11 +65,12 @@ jobs:
           images: ghcr.io/${{ vars.GH_USERNAME_LOWERCASE }}/zadanie2
           flavor: latest=false
           tags: |
-            type=sha,priority=100,pattern={{version}}
+            type=sha,priority=100,prefix=sha-,format=short
+            type=semver,priority=200,pattern={{version}}
 
       - 
         name: Build and push Docker image
         id: push
         run: | 
-            docker build . --tag ghcr.io/${{ vars.GH_USERNAME_LOWERCASE }}/zadanie2:${{ steps.meta.outputs.tags }} --cache-from="type=gha" --cache-to="type=gha"
-            docker push ghcr.io/${{ vars.GH_USERNAME_LOWERCASE }}/zadanie2:${{ steps.meta.outputs.tags }}
+            docker build . --tag ${{ steps.meta.outputs.tags }} --cache-from="type=gha" --cache-to="type=gha"
+            docker push ${{ steps.meta.outputs.tags }}
