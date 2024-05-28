@@ -23,18 +23,18 @@ jobs:
     steps:
       - 
         name: Check out the source_repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4 # akcja sprawdzająca dostęp do repozytorium
       
       - 
         name: QEMU set-up
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v3 # akcja instalująca statyczne pliki binarne qemu
 
       - 
         name: Buildx set-up
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v3 # akcja tworząca builder
 
       - 
-        name: Log in to the Github container registry
+        name: Log in to the Github container registry # logowanie do ghcr
         uses: docker/login-action@v1
         with:
           registry: ${{ env.REGISTRY }}
@@ -42,11 +42,11 @@ jobs:
           password: ${{ secrets.GH_TOKEN }}
 
       -
-        name: Build local image
-        run: docker build . --file Dockerfile --tag zadanie2test:v1
+        name: Build local image # lokalne budowanie obrazu
+        run: docker build . --file Dockerfile --tag zadanie2test:v1 --platform linux/amd64,linux/arm64
 
       -
-        name: Scan local image
+        name: Scan local image # sprawdzenie czy obraz nie zawiera zagrożeń krytycznych
         id: image-scan
         run: | 
             curl -fsSL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh -o install-scout.sh
@@ -56,7 +56,7 @@ jobs:
             echo "SCAN_RESULT=$?" >> "$GITHUB_ENV"
       
       -
-        name: Docker metadata definitions
+        name: Docker metadata definitions # pobranie metadanych o obrazie
         id: meta
         uses: docker/metadata-action@v5
         with:
@@ -67,9 +67,9 @@ jobs:
             type=semver,priority=200,pattern={{version}}
 
       - 
-        name: Build and push Docker image
+        name: Build and push Docker image # zbudowanie obrazu i wypchnięcie go do repozytorium
         id: push
         run: | 
-            docker build . --tag ${{ steps.meta.outputs.tags }} --cache-from="type=gha" --cache-to="type=gha"
+            docker build . --tag ${{ steps.meta.outputs.tags }} --cache-from="type=gha" --cache-to="type=gha" --platform linux/amd64,linux/arm64
             docker push ${{ steps.meta.outputs.tags }}
 #
