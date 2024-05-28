@@ -82,11 +82,3 @@ jobs:
           cache-to: |
             type=gha 
           tags: ${{ steps.meta.outputs.tags }}
-
-      # - 
-      #   name: Build and push Docker image # zbudowanie obrazu i wypchnięcie go do repozytorium
-      #   id: push
-      #   run: | 
-      #       docker build . --tag ${{ steps.meta.outputs.tags }} --cache-from="type=gha" --cache-to="type=gha" --platform linux/amd64,linux/arm64
-      #       docker push ${{ steps.meta.outputs.tags }}
-#
