@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
 
-# checking push
+# checking pus
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
