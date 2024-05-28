@@ -3,8 +3,6 @@ name: GHAction example
 on:
   workflow_dispatch:
   push:
-    tags:
-    - 'v*'
 
 # checking push
 env:
