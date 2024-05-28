@@ -44,6 +44,8 @@ jobs:
       -
         name: Build local image # lokalne budowanie obrazu
         run: |
+            docker buildx create --use --platform=linux/arm64,linux/amd64 --name multi-platform-builder
+            docker buildx inspect --bootstrap
             docker build . --file Dockerfile --tag zadanie2test:v1 --platform linux/amd64,linux/arm64
 
       -
